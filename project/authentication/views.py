@@ -24,6 +24,33 @@ def signup(request):
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
         
+        
+        #Validation
+        if User.objects.filter(username = username):
+            messages.error(request , "Username already exists!")
+            return redirect ('signup')
+
+        if User.objects.filter(email = email):
+            messages.error(request , 'Email address already exists!')
+            return redirect ('signup')
+        
+        if len(username) > 12:
+            messages.error(request , 'Username must be under 12 characters')
+            return redirect ('signup')
+        
+        if pass1 != pass2 :
+            messages.error(request , 'Passwords dont match bro.')
+            return redirect ('signup')
+        
+        if not username.isalnum():
+            messages.error(request , 'Username is only Alpha-Numeric gee')
+            return redirect ('signup')      
+        
+        if len(pass1) < 10:
+            messages.error(request , 'Password should be more than 10 charaters!')
+            return redirect ('signup')      
+                   
+        
         #Create user object (eith the user module imported)
         user = User.objects.create_user(username , email , pass1)
         user.first_name = firstname
@@ -33,7 +60,7 @@ def signup(request):
         user.save()
         
         #Send a messsage telling the user he has successfully created an account
-        # messages.success(request , 'Your account has been succesfully made , Welcome to the Iluuminati.')
+        messages.success(request , 'Your account has been succesfully made , Welcome to the Iluuminati.')
         return redirect ('signin')
         
     return render (request , 'authentication/signup.html')
