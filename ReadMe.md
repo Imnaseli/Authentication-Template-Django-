@@ -1,2 +1,2 @@
 ### Authentication System made with Django
-##### Can send email to verify your registration.
+##### Django authentication i might\should use in the future
